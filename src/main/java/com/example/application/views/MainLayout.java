@@ -1,10 +1,23 @@
 package com.example.application.views;
 
-import com.example.application.views.empty.EmptyView;
+
+import com.example.application.data.entity.User;
+import com.example.application.security.AuthenticatedUser;
+import com.example.application.views.area.AreaView;
+import com.example.application.views.book.BookView;
+import com.example.application.views.dashboard.DashboardView;
+import com.example.application.views.libro.LibroView;
+import com.example.application.views.listalibros.ListaLibrosView;
+import com.example.application.views.person.PersonView;
+import com.example.application.views.report.ReportView;
+import com.example.application.views.trajeta_prestamo.Trajeta_PrestamoView;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
+import com.vaadin.flow.component.avatar.Avatar;
 import com.vaadin.flow.component.button.ButtonVariant;
+import com.vaadin.flow.component.contextmenu.ContextMenu;
+import com.vaadin.flow.component.html.Anchor;
 import com.vaadin.flow.component.html.Footer;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.H2;
@@ -15,9 +28,10 @@ import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.html.UnorderedList;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.RouterLink;
+import com.vaadin.flow.server.auth.AccessAnnotationChecker;
 import java.util.ArrayList;
 import java.util.List;
-
+import java.util.Optional;
 /**
  * The main view is a top-level placeholder for other views.
  */
@@ -52,7 +66,13 @@ public class MainLayout extends AppLayout {
 
     private H1 viewTitle;
 
-    public MainLayout() {
+    private AuthenticatedUser authenticatedUser;
+    private AccessAnnotationChecker accessChecker;
+
+    public MainLayout(AuthenticatedUser authenticatedUser, AccessAnnotationChecker accessChecker) {
+        this.authenticatedUser = authenticatedUser;
+        this.accessChecker = accessChecker;
+
         setPrimarySection(Section.DRAWER);
         addToNavbar(true, createHeaderContent());
         addToDrawer(createDrawerContent());
@@ -74,7 +94,7 @@ public class MainLayout extends AppLayout {
     }
 
     private Component createDrawerContent() {
-        H2 appName = new H2("My App");
+        H2 appName = new H2("Almacen");
         appName.addClassNames("flex", "items-center", "h-xl", "m-0", "px-m", "text-m");
 
         com.vaadin.flow.component.html.Section section = new com.vaadin.flow.component.html.Section(appName,
@@ -102,13 +122,19 @@ public class MainLayout extends AppLayout {
 
     private List<RouterLink> createLinks() {
         MenuItemInfo[] menuItems = new MenuItemInfo[]{ //
-                new MenuItemInfo("Empty", "la la-file", EmptyView.class), //
-
-        };
+            new MenuItemInfo("Dashboard", "la la-file", DashboardView.class), //
+            new MenuItemInfo("Book", "la la-file", BookView.class), //
+            new MenuItemInfo("Libro", "la la-file", LibroView.class),
+            new MenuItemInfo("Report", "la la-file", ReportView.class),
+            new MenuItemInfo("Area", "la la-file", AreaView.class),
+            new MenuItemInfo("Lista de Libros", "la la-file", ListaLibrosView.class),
+            new MenuItemInfo("Personas", "la la-file", PersonView.class),
+            new MenuItemInfo("Trajeta de Prestamo", "la la-file", Trajeta_PrestamoView.class),};
         List<RouterLink> links = new ArrayList<>();
         for (MenuItemInfo menuItemInfo : menuItems) {
-            links.add(createLink(menuItemInfo));
-
+            if (accessChecker.hasAccess(menuItemInfo.getView())) {
+                links.add(createLink(menuItemInfo));
+            }
         }
         return links;
     }
@@ -134,6 +160,28 @@ public class MainLayout extends AppLayout {
     private Footer createFooter() {
         Footer layout = new Footer();
         layout.addClassNames("flex", "items-center", "my-s", "px-m", "py-xs");
+
+        Optional<User> maybeUser = authenticatedUser.get();
+        if (maybeUser.isPresent()) {
+            User user = maybeUser.get();
+
+            Avatar avatar = new Avatar(user.getUsername(), user.getProfilePictureUrl());
+            avatar.addClassNames("me-xs");
+
+            ContextMenu userMenu = new ContextMenu(avatar);
+            userMenu.setOpenOnClick(true);
+            userMenu.addItem("Logout", e -> {
+                authenticatedUser.logout();
+            });
+
+            Span name = new Span(user.getName());
+            name.addClassNames("font-medium", "text-s", "text-secondary");
+
+            layout.add(avatar, name);
+        } else {
+            Anchor loginLink = new Anchor("login", "Sign in");
+            layout.add(loginLink);
+        }
 
         return layout;
     }
