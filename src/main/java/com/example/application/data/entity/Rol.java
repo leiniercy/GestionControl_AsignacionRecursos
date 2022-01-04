@@ -30,9 +30,27 @@ import lombok.ToString;
 @NoArgsConstructor
 
 public enum Rol {
+ 
+    //Roles
+    ADMIN("admin"), //Administrador general del sistema 
+    
+    DECANA("decana"), //Máximo responsable del control interno de la facultad. 
+    
+    VISEDECANO_ADMINSTRACION_ECONOMIA("vicedecano_adminstracion"),//Máximo responsable de controlar el destino final de todos los recursos de la facultad. 
+    
+    ADMINSITRADOR_DOCENTE("administrador_docente"), /*Encargado de dar entrada y salida a los insumos de limpieza en el Libro de control de insumos. 
+                                                    Es el máximo responsable de que estos recursos lleguen a su destino final correspondiente: 
+                                                    Auxiliares Generales de Servicio o a las oficinistas.*/ 
 
-    USER("user"), ADMIN("admin");
-
+    ASISTENTE_CONTROL("asistente_control"), /*Responsable de entregar los recursos materiales a los estudiantes y trabajadores. 
+                                            Además, debe mantener actualizada y firmadas las actas de destino final.*/
+    
+    RESPONSABLE_ALAMACEN("responsable_almacen"), //Encargado de la entrega, recepción y control de los libros en el almacén. 
+    
+    USER("user"), // tarbajadores y estudiantes (Personal de la facultad al que le es entregado los recursos materiales)
+    
+    PERSONAL_SERVICIO("personal_servicio"); //personal al que le es entregado los insumos de limpieza. 
+    
     private String rolname;
 
     public String getRolname() {
