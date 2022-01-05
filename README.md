@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # My App
 
 This project can be used as a starting point to create your own Vaadin application with Spring Boot.
@@ -45,3 +46,7 @@ Once the JAR file is built, you can run it using
 - Find Add-ons at [vaadin.com/directory](https://vaadin.com/directory).
 - Ask questions on [Stack Overflow](https://stackoverflow.com/questions/tagged/vaadin) or join our [Discord channel](https://discord.gg/MYFq5RTbBn).
 - Report issues, create pull requests in [GitHub](https://github.com/vaadin/platform).
+=======
+# GestionControl_AsignacionRecursos
+Proyecto de Investigacion y desarrollo (LIAS)
+>>>>>>> cbd3d2397fe79ceee5004102b7d4fb0bf4d21f9e
