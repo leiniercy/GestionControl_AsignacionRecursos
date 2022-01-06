@@ -5,8 +5,7 @@
  */
 package com.example.application.views.report;
 
-import com.example.application.data.entity.Book;
-import com.example.application.data.service.BookService;
+
 import com.vaadin.flow.component.html.Anchor;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -24,7 +23,7 @@ import javax.annotation.security.RolesAllowed;
 @RolesAllowed("admin")
 public class ReportView extends VerticalLayout {
 
-    public ReportView(BookService service) {
+    public ReportView() {
 //        var report = new PrintPreviewReport<>(Book.class, "title", "published", "rating");
 //        report.setItems(service.findAll());
 //        report.getReportBuilder().setTitle("Books");

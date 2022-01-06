@@ -49,7 +49,7 @@ public class RecursoMaterial  extends AbstractEntity {
  
     
     @OneToMany(mappedBy = "recurso")
-    private List<Tipo_Material> materiales;
+    private List<TipoMaterial> materiales;
  
     
 }

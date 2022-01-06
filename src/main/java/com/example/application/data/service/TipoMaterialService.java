@@ -1,31 +1,31 @@
 package com.example.application.data.service;
 
-import com.example.application.data.entity.Tipo_Material;
+import com.example.application.data.entity.TipoMaterial;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.vaadin.crudui.crud.CrudListener;
-import com.example.application.data.repository.Tipo_MaterialRepository;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import com.example.application.data.repository.TipoMaterialRepository;
 
 @Service
 //@RequiredArgsConstructor
-public class Tipo_MaterialService {
+public class TipoMaterialService {
     
-    private Tipo_MaterialRepository repository;
+    private TipoMaterialRepository repository;
     
-    public Tipo_MaterialService(@Autowired Tipo_MaterialRepository repository) {
+    public TipoMaterialService(@Autowired TipoMaterialRepository repository) {
         this.repository = repository;
     }
 
-    public Optional<Tipo_Material> get(Integer id) {
+    public Optional<TipoMaterial> get(Integer id) {
         return repository.findById(id);
     }
 
-    public Tipo_Material update(Tipo_Material entity) {
+    public TipoMaterial update(TipoMaterial entity) {
         return repository.save(entity);
     }
 
@@ -33,7 +33,7 @@ public class Tipo_MaterialService {
         repository.deleteById(id);
     }
 
-    public Page<Tipo_Material> list(Pageable pageable) {
+    public Page<TipoMaterial> list(Pageable pageable) {
         return repository.findAll(pageable);
     }
 

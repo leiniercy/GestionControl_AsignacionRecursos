@@ -4,7 +4,6 @@ package com.example.application.views;
 import com.example.application.data.entity.User;
 import com.example.application.security.AuthenticatedUser;
 import com.example.application.views.area.AreaView;
-import com.example.application.views.book.BookView;
 import com.example.application.views.dashboard.DashboardView;
 import com.example.application.views.libro.LibroView;
 import com.example.application.views.listalibros.ListaLibrosView;
@@ -123,7 +122,6 @@ public class MainLayout extends AppLayout {
     private List<RouterLink> createLinks() {
         MenuItemInfo[] menuItems = new MenuItemInfo[]{ //
             new MenuItemInfo("Dashboard", "la la-file", DashboardView.class), //
-            new MenuItemInfo("Book", "la la-file", BookView.class), //
             new MenuItemInfo("Libro", "la la-file", LibroView.class),
             new MenuItemInfo("Report", "la la-file", ReportView.class),
             new MenuItemInfo("Area", "la la-file", AreaView.class),
