@@ -15,6 +15,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -41,9 +42,8 @@ public class Modulo  extends AbstractEntity {
 
     @EqualsAndHashCode.Include
     @ToString.Include
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    private Long id;
+    
+    @NotNull(message = "campo vacío")
     @Column(name = "annoAcademico")
     private int annoAcademico;
     
@@ -53,7 +53,7 @@ public class Modulo  extends AbstractEntity {
     private Estudiante estudiante;
     @OneToOne()
     private Trabajador trabajador;    
-    @OneToMany(mappedBy = "modulo")
-    private List<Asignatura> asignaturas;
+    @OneToOne()
+    private Asignatura asignatura;
     
 }

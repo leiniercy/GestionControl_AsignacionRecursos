@@ -5,6 +5,7 @@ import com.example.application.data.service.LibroService;
 import com.example.application.views.MainLayout;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.HasStyle;
+import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
@@ -16,6 +17,7 @@ import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.splitlayout.SplitLayout;
 import com.vaadin.flow.component.textfield.TextField;
@@ -60,8 +62,9 @@ public class LibroView extends Div implements BeforeEnterObserver {
     private TextField precio;
     private TextField cant_libros;
 
-    private Button cancel = new Button("Cancel");
-    private Button save = new Button("Save");
+    private Button save = new Button("Añadir");
+    private Button cancel = new Button("Cancelar");
+    private Button delete = new Button("Eliminar");
 
     private BeanValidationBinder<Libro> binder;
 
@@ -126,11 +129,14 @@ public class LibroView extends Div implements BeforeEnterObserver {
 
         attachImageUpload(image, imagePreview);
 
+        //Button
+        cancel.addClickShortcut(Key.ESCAPE);
         cancel.addClickListener(e -> {
             clearForm();
             refreshGrid();
         });
-
+        
+        save.addClickShortcut(Key.ENTER);
         save.addClickListener(e -> {
             try {
                 if (this.libro == null) {
@@ -142,7 +148,26 @@ public class LibroView extends Div implements BeforeEnterObserver {
                 libroService.update(this.libro);
                 clearForm();
                 refreshGrid();
-                Notification.show("Libro details stored.");
+                Notification.show("Libro añadido.");
+                UI.getCurrent().navigate(LibroView.class);
+            } catch (ValidationException validationException) {
+                Notification.show("An exception happened while trying to store the libro details.");
+            }
+        });
+        
+        delete.addClickShortcut(Key.DELETE);
+        delete.addClickListener(e -> {
+            try {
+                if (this.libro == null) {
+                    this.libro = new Libro();
+                }
+                binder.writeBean(this.libro);
+                this.libro.setImage(imagePreview.getSrc());
+
+                libroService.delete(this.libro);
+                clearForm();
+                refreshGrid();
+                Notification.show("Libro eliminado.");
                 UI.getCurrent().navigate(LibroView.class);
             } catch (ValidationException validationException) {
                 Notification.show("An exception happened while trying to store the libro details.");
@@ -209,9 +234,11 @@ public class LibroView extends Div implements BeforeEnterObserver {
         HorizontalLayout buttonLayout = new HorizontalLayout();
         buttonLayout.setClassName("w-full flex-wrap bg-contrast-5 py-s px-l");
         buttonLayout.setSpacing(true);
+        buttonLayout.setDefaultVerticalComponentAlignment(FlexComponent.Alignment.BASELINE);
         cancel.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
+        delete.addThemeVariants(ButtonVariant.LUMO_ERROR);
         save.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-        buttonLayout.add(save, cancel);
+        buttonLayout.add(save, delete, cancel);
         editorLayoutDiv.add(buttonLayout);
     }
 

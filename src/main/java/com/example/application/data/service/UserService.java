@@ -35,8 +35,8 @@ public class UserService {
         return repository.findAll(pageable);
     }
 
-    public int count() {
-        return (int) repository.count();
+    public long count() {
+        return  repository.count();
     }
     
 }

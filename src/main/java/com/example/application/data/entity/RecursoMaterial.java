@@ -14,6 +14,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -39,14 +41,14 @@ public class RecursoMaterial  extends AbstractEntity {
 
     @EqualsAndHashCode.Include
     @ToString.Include
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    private Long id;
-    @Column(name = "codigo")
+    
+    @NotNull(message = "campo vacío")
+    @Column(name = "codigo", unique = true)
     private int codigo;
-    @Column(name = "nombre")
+    
+    @NotBlank(message = "campo vacío")
+    @Column(name = "nombre",nullable = false, length = 250)
     private String nombre;
- 
     
     @OneToMany(mappedBy = "recurso")
     private List<TipoMaterial> materiales;

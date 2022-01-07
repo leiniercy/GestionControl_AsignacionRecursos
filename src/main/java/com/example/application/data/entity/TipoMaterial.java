@@ -8,6 +8,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -29,9 +30,8 @@ public class TipoMaterial  extends AbstractEntity{
 
     @EqualsAndHashCode.Include
     @ToString.Include
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    private Long id;
+    
+    @NotBlank(message = "campo vacío")
     @Column(name = "nombre")
     private String nombre;
     

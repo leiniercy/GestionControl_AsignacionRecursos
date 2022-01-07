@@ -29,16 +29,20 @@ public class TipoMaterialService {
         return repository.save(entity);
     }
 
-    public void delete(Integer id) {
+    public void deleteById(Integer id) {
         repository.deleteById(id);
+    }
+    
+    public void delete(TipoMaterial tipoMaterial) {
+        repository.delete(tipoMaterial);
     }
 
     public Page<TipoMaterial> list(Pageable pageable) {
         return repository.findAll(pageable);
     }
 
-    public int count() {
-        return (int) repository.count();
+    public long count() {
+        return  repository.count();
     }
     
 }

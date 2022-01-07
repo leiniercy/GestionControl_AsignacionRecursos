@@ -23,6 +23,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import com.example.application.data.AbstractEntity;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -40,11 +42,11 @@ public class Grupo   extends AbstractEntity {
 
     @EqualsAndHashCode.Include
     @ToString.Include
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    private Long id;
+
+    @NotBlank(message = "campo vacío")
     @Column(name = "numero", unique = true)
-    private Integer numero;
+    @Size(max = 4, min=4)
+    private String numero;
     
     @OneToMany(mappedBy = "grupo")
     List<Estudiante> estudiantes;

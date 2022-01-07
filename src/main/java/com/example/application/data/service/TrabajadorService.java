@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 import org.vaadin.crudui.crud.CrudListener;
 
 @Service
-//@RequiredArgsConstructor
 public class TrabajadorService   {
 
     private final TrabajadorRepository repository;
@@ -29,16 +28,20 @@ public class TrabajadorService   {
         return repository.save(entity);
     }
 
-    public void delete(Integer id) {
+    public void deleteById(Integer id) {
         repository.deleteById(id);
+    }
+    
+    public void delete(Trabajador trabajador) {
+        repository.delete(trabajador);
     }
 
     public Page<Trabajador> list(Pageable pageable) {
         return repository.findAll(pageable);
     }
 
-    public int count() {
-        return (int) repository.count();
+    public long count() {
+        return  repository.count();
     }
 
 

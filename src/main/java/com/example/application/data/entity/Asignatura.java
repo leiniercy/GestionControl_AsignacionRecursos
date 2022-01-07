@@ -18,6 +18,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import com.example.application.data.AbstractEntity;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -39,15 +41,13 @@ public class Asignatura extends AbstractEntity{
 
     @EqualsAndHashCode.Include
     @ToString.Include
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    private Long id;
-    @Column(name = "nombre")
-    private String nombre;
-    @Column(name = "annoAcademico")
-    private String annoAcademico;
     
-    @ManyToOne
-    Modulo modulo;
-
+    @NotBlank(message = "campo vacío")
+    @Column(name = "nombre", length = 250, nullable = false)
+    private String nombre;
+    
+    @NotNull(message = "campo vacío")
+    @Column(name = "annoAcademico")
+    private Integer annoAcademico;
+    
 }

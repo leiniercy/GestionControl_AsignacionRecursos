@@ -20,8 +20,8 @@ import org.vaadin.crudui.crud.CrudListener;
  *
  * @author Leinier
  */
+
 @Service
-//@RequiredArgsConstructor
 public class RecursoMaterialService  {
     
     private  RecursoMaterialRepository repository;
@@ -38,15 +38,19 @@ public class RecursoMaterialService  {
         return repository.save(entity);
     }
 
-    public void delete(Integer id) {
+    public void deleteById (Integer id) {
         repository.deleteById(id);
+    }
+    
+    public void delete(RecursoMaterial recursoMaterial) {
+        repository.delete(recursoMaterial);
     }
 
     public Page<RecursoMaterial> list(Pageable pageable) {
         return repository.findAll(pageable);
     }
 
-    public int count() {
-        return (int) repository.count();
+    public long count() {
+        return  repository.count();
     }
 }

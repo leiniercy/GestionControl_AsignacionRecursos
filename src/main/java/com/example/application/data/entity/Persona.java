@@ -12,8 +12,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.validation.constraints.Max;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -40,16 +41,21 @@ public class Persona  extends AbstractEntity{
 
     @EqualsAndHashCode.Include
     @ToString.Include
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    private Long id;
-    @Column(name = "nombre", length = 250)
-    @NotBlank(message = "Nombre incorrecto")
+
+    @Column(name = "nombre", length = 250,nullable = false)
+    @NotBlank(message = "campo vacío")
     private String nombre;
-    @Column(name = "apellidos")
+    
+    @Column(name = "apellidos", length = 250,nullable = false)
     private String apellidos;
-    @Column(name = "CI")
-    private Integer ci;
+    
+    @NotBlank(message = "campo vacío")
+    @Column(name = "CI" ,length = 11)
+    @Size(max = 11, min = 11) 
+    private String ci;
+    
+    @Email
+    @NotBlank(message = "campo vacío")
     @Column(name = "email")
     private String email;
 

@@ -7,9 +7,8 @@ import com.example.application.views.area.AreaView;
 import com.example.application.views.dashboard.DashboardView;
 import com.example.application.views.libro.LibroView;
 import com.example.application.views.listalibros.ListaLibrosView;
-import com.example.application.views.person.PersonView;
 import com.example.application.views.report.ReportView;
-import com.example.application.views.trajeta_prestamo.Trajeta_PrestamoView;
+import com.example.application.views.trajeta_prestamo.TrajetaPrestamoEstudianteView;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
@@ -126,8 +125,7 @@ public class MainLayout extends AppLayout {
             new MenuItemInfo("Report", "la la-file", ReportView.class),
             new MenuItemInfo("Area", "la la-file", AreaView.class),
             new MenuItemInfo("Lista de Libros", "la la-file", ListaLibrosView.class),
-            new MenuItemInfo("Personas", "la la-file", PersonView.class),
-            new MenuItemInfo("Trajeta de Prestamo", "la la-file", Trajeta_PrestamoView.class),};
+            new MenuItemInfo("Trajeta de Prestamo", "la la-file", TrajetaPrestamoEstudianteView.class),};
         List<RouterLink> links = new ArrayList<>();
         for (MenuItemInfo menuItemInfo : menuItems) {
             if (accessChecker.hasAccess(menuItemInfo.getView())) {

@@ -3,37 +3,48 @@ package com.example.application.data.service;
 import com.example.application.data.entity.Estudiante;
 import com.example.application.data.repository.EstudianteRepository;
 import java.util.List;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.vaadin.crudui.crud.CrudListener;
 
 
 @Service
-@RequiredArgsConstructor
-public class EstudianteService implements CrudListener<Estudiante> {
+public class EstudianteService {
     
-    private final EstudianteRepository repository;
+    private EstudianteRepository estudianteRepository;
 
-    @Override
-    public List<Estudiante> findAll() {
-        return repository.findAll();
+    public EstudianteService(
+            @Autowired EstudianteRepository estudianteRepository
+           ) {
+        this.estudianteRepository = estudianteRepository;
     }
 
-    @Override
-    public Estudiante add(Estudiante estudiante) {
-        return repository.save(estudiante);
+    public Optional<Estudiante> get(Integer id) {
+        return estudianteRepository.findById(id);
     }
 
-    @Override
-    public Estudiante update(Estudiante estudiante) {
-         return repository.save(estudiante);
+    public Estudiante update(Estudiante entity) {
+        return estudianteRepository.save(entity);
     }
 
-    @Override
-    public void delete(Estudiante estudiante) {
-        repository.delete(estudiante);
+    public void deleteById(Integer id) {
+        estudianteRepository.deleteById(id);
     }
-
     
+    public  void delete (Estudiante estudiante){
+        estudianteRepository.delete(estudiante);
+    }
+
+    public Page<Estudiante> list(Pageable pageable) {
+        return estudianteRepository.findAll(pageable);
+    }
+
+    public long count() {
+        return  estudianteRepository.count();
+    }
 
 }

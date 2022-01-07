@@ -40,16 +40,20 @@ public class AreaService {
         return repository.save(entity);
     }
 
-    public void delete(Integer id) {
+    public void deletebyId(Integer id) {
         repository.deleteById(id);
+    }
+    
+    public void delete(Area area) {
+        repository.delete(area);
     }
 
     public Page<Area> list(Pageable pageable) {
         return repository.findAll(pageable);
     }
 
-    public int count() {
-        return (int) repository.count();
+    public long count() {
+        return  repository.count();
     }
 
 }

@@ -1,19 +1,25 @@
 package com.example.application.views.trajeta_prestamo;
 
+import com.example.application.data.DataService;
+import com.example.application.data.entity.Estudiante;
+import com.example.application.data.entity.Libro;
 import com.example.application.data.entity.TarjetaPrestamo;
 import com.example.application.data.service.TarjetaPrestamoService;
 import com.example.application.views.MainLayout;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.HasStyle;
+import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
+import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridVariant;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.splitlayout.SplitLayout;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
@@ -28,21 +34,24 @@ import javax.annotation.security.RolesAllowed;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 
-@PageTitle("Trajeta_Prestamo")
-@Route(value = "trajeta_Prestamo/:tarjeta_PrestamoID?/:action?(edit)", layout = MainLayout.class)
+@PageTitle("Trajeta Prestamo Estudiante")
+@Route(value = "trajeta-prestamo-estudiante-view/:trajeta-prestamo-estudianteID?/:action?(edit)", layout = MainLayout.class)
 @RolesAllowed("admin")
-public class Trajeta_PrestamoView extends Div implements BeforeEnterObserver {
+public class TrajetaPrestamoEstudianteView extends Div implements BeforeEnterObserver {
 
-    private final String TARJETA_PRESTAMO_ID = "tarjeta_PrestamoID";
-    private final String TARJETA_PRESTAMO_EDIT_ROUTE_TEMPLATE = "trajeta_Prestamo/%d/edit";
+    private final String TARJETA_PRESTAMO_ID = "trajeta-prestamo-estudianteID";
+    private final String TARJETA_PRESTAMO_EDIT_ROUTE_TEMPLATE = "trajeta-prestamo-estudiante-view/%d/edit";
 
     private Grid<TarjetaPrestamo> grid = new Grid<>(TarjetaPrestamo.class, false);
 
     private DatePicker fecha_prestamo;
     private DatePicker fecha_recojida;
+    private ComboBox<Estudiante>estudiante;
+    private ComboBox<Libro>libro;
 
-    private Button cancel = new Button("Cancel");
-    private Button save = new Button("Save");
+    private Button save = new Button("Añadir");
+    private Button cancel = new Button("Cancelar");
+    private Button delete = new Button("Eliminar");
 
     private BeanValidationBinder<TarjetaPrestamo> binder;
 
@@ -50,9 +59,12 @@ public class Trajeta_PrestamoView extends Div implements BeforeEnterObserver {
 
     private TarjetaPrestamoService tarjeta_PrestamoService;
 
-    public Trajeta_PrestamoView(@Autowired TarjetaPrestamoService tarjeta_PrestamoService) {
+    public TrajetaPrestamoEstudianteView(
+            @Autowired TarjetaPrestamoService tarjeta_PrestamoService,
+            @Autowired DataService dataService) {
+        
         this.tarjeta_PrestamoService = tarjeta_PrestamoService;
-        addClassNames("trajeta-prestamo-view", "flex", "flex-col", "h-full");
+        addClassNames("trajeta-prestamo-estudiante-view", "flex", "flex-col", "h-full");
 
         // Create UI
         SplitLayout splitLayout = new SplitLayout();
@@ -66,6 +78,8 @@ public class Trajeta_PrestamoView extends Div implements BeforeEnterObserver {
         // Configure Grid
         grid.addColumn("fecha_prestamo").setAutoWidth(true);
         grid.addColumn("fecha_recojida").setAutoWidth(true);
+        grid.addColumn(tarjeta_Prestamo -> tarjeta_Prestamo.getEstudiante().getStringNombreApellidos() ).setAutoWidth(true);
+        grid.addColumn(tarjeta_Prestamo -> tarjeta_Prestamo.getLibro().getTitulo() ).setAutoWidth(true);
         grid.setItems(query -> tarjeta_PrestamoService.list(
                 PageRequest.of(query.getPage(), query.getPageSize(), VaadinSpringDataHelpers.toSpringDataSort(query)))
                 .stream());
@@ -78,7 +92,7 @@ public class Trajeta_PrestamoView extends Div implements BeforeEnterObserver {
                 UI.getCurrent().navigate(String.format(TARJETA_PRESTAMO_EDIT_ROUTE_TEMPLATE, event.getValue().getId()));
             } else {
                 clearForm();
-                UI.getCurrent().navigate(Trajeta_PrestamoView.class);
+                UI.getCurrent().navigate(TrajetaPrestamoEstudianteView.class);
             }
         });
 
@@ -86,14 +100,22 @@ public class Trajeta_PrestamoView extends Div implements BeforeEnterObserver {
         binder = new BeanValidationBinder<>(TarjetaPrestamo.class);
 
         // Bind fields. This where you'd define e.g. validation rules
-
         binder.bindInstanceFields(this);
+        
+        libro.setItems(dataService.findAllLibro());
+        libro.setItemLabelGenerator(Libro :: getTitulo);
+        
+        estudiante.setItems(dataService.findAllEstudiante());
+        estudiante.setItemLabelGenerator(Estudiante :: getStringNombreApellidos);
 
+        //Button
+        cancel.addClickShortcut(Key.ESCAPE);
         cancel.addClickListener(e -> {
             clearForm();
             refreshGrid();
         });
 
+        save.addClickShortcut(Key.ENTER);
         save.addClickListener(e -> {
             try {
                 if (this.tarjeta_Prestamo == null) {
@@ -104,8 +126,26 @@ public class Trajeta_PrestamoView extends Div implements BeforeEnterObserver {
                 tarjeta_PrestamoService.update(this.tarjeta_Prestamo);
                 clearForm();
                 refreshGrid();
-                Notification.show("Tarjeta_Prestamo details stored.");
-                UI.getCurrent().navigate(Trajeta_PrestamoView.class);
+                Notification.show("Tarjeta-Estudiante añadida.");
+                UI.getCurrent().navigate(TrajetaPrestamoEstudianteView.class);
+            } catch (ValidationException validationException) {
+                Notification.show("An exception happened while trying to store the tarjeta_Prestamo details.");
+            }
+        });
+        
+        delete.addClickShortcut(Key.DELETE);
+        delete.addClickListener(e -> {
+            try {
+                if (this.tarjeta_Prestamo == null) {
+                    this.tarjeta_Prestamo = new TarjetaPrestamo();
+                }
+                binder.writeBean(this.tarjeta_Prestamo);
+
+                tarjeta_PrestamoService.delete(this.tarjeta_Prestamo);
+                clearForm();
+                refreshGrid();
+                Notification.show("Tarjeta-Estudiante eliminada.");
+                UI.getCurrent().navigate(TrajetaPrestamoEstudianteView.class);
             } catch (ValidationException validationException) {
                 Notification.show("An exception happened while trying to store the tarjeta_Prestamo details.");
             }
@@ -127,7 +167,7 @@ public class Trajeta_PrestamoView extends Div implements BeforeEnterObserver {
                 // when a row is selected but the data is no longer available,
                 // refresh grid
                 refreshGrid();
-                event.forwardTo(Trajeta_PrestamoView.class);
+                event.forwardTo(TrajetaPrestamoEstudianteView.class);
             }
         }
     }
@@ -144,7 +184,9 @@ public class Trajeta_PrestamoView extends Div implements BeforeEnterObserver {
         FormLayout formLayout = new FormLayout();
         fecha_prestamo = new DatePicker("Fecha_prestamo");
         fecha_recojida = new DatePicker("Fecha_recojida");
-        Component[] fields = new Component[]{fecha_prestamo, fecha_recojida};
+        libro = new ComboBox<>("Libro");
+        estudiante = new ComboBox<>("Estudiante");
+        Component[] fields = new Component[]{fecha_prestamo, fecha_recojida, libro,estudiante};
 
         for (Component field : fields) {
             ((HasStyle) field).addClassName("full-width");
@@ -160,9 +202,11 @@ public class Trajeta_PrestamoView extends Div implements BeforeEnterObserver {
         HorizontalLayout buttonLayout = new HorizontalLayout();
         buttonLayout.setClassName("w-full flex-wrap bg-contrast-5 py-s px-l");
         buttonLayout.setSpacing(true);
+        buttonLayout.setDefaultVerticalComponentAlignment(FlexComponent.Alignment.BASELINE);
         cancel.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
+        delete.addThemeVariants(ButtonVariant.LUMO_ERROR);
         save.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-        buttonLayout.add(save, cancel);
+        buttonLayout.add(save, delete, cancel);
         editorLayoutDiv.add(buttonLayout);
     }
 

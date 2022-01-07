@@ -38,16 +38,20 @@ public class PersonaService  {
         return repository.save(entity);
     }
 
-    public void delete(Integer id) {
+    public void deleteById(Integer id) {
         repository.deleteById(id);
+    }
+    
+    public void delete(Persona persona) {
+        repository.delete(persona);
     }
 
     public Page<Persona> list(Pageable pageable) {
         return repository.findAll(pageable);
     }
 
-    public int count() {
-        return (int) repository.count();
+    public  long count() {
+        return  repository.count();
     }
 
 

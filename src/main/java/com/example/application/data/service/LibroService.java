@@ -30,16 +30,20 @@ public class LibroService  {
         return repository.save(entity);
     }
 
-    public void delete(Integer id) {
+    public void deleteById(Integer id) {
         repository.deleteById(id);
+    }
+    
+    public void delete(Libro libro) {
+        repository.delete(libro);
     }
 
     public Page<Libro> list(Pageable pageable) {
         return repository.findAll(pageable);
     }
 
-    public int count() {
-        return (int) repository.count();
+    public long count() {
+        return  repository.count();
     }
 
 }
