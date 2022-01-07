@@ -9,6 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -26,15 +27,16 @@ import lombok.ToString;
 @ToString(onlyExplicitlyIncluded = true)
 @Entity
 @Table(name = "Tipo_Materiales")
-public class TipoMaterial  extends AbstractEntity{
+public class TipoMaterial extends AbstractEntity {
 
     @EqualsAndHashCode.Include
     @ToString.Include
-    
+
+    @NotEmpty
     @NotBlank(message = "campo vacío")
     @Column(name = "nombre")
     private String nombre;
-    
+
     @ManyToOne
     RecursoMaterial recurso;
 

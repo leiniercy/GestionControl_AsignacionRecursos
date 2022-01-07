@@ -52,12 +52,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 
 @PageTitle("Estudiantes")
-@Route(value = "estudiantes/:estudianteID?/:action?(edit)", layout = MainLayout.class)
+@Route(value = "estudiantes-view/:estudianteID?/:action?(edit)", layout = MainLayout.class)
 @RolesAllowed("admin")
 public class EstudiantesView extends Div implements BeforeEnterObserver {
 
     private final String ESTUDIANTE_ID = "estudianteID";
-    private final String ESTUDIANTE_EDIT_ROUTE_TEMPLATE = "estudiantes/%d/edit";
+    private final String ESTUDIANTE_EDIT_ROUTE_TEMPLATE = "estudiantes-view/%d/edit";
 
     private Grid<Estudiante> grid = new Grid<>(Estudiante.class, false);
 

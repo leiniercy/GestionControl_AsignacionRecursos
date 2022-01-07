@@ -15,6 +15,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -37,21 +38,21 @@ import lombok.ToString;
 @ToString(onlyExplicitlyIncluded = true)
 @Entity
 @Table(name = "RecursosMaterial")
-public class RecursoMaterial  extends AbstractEntity {
+public class RecursoMaterial extends AbstractEntity {
 
     @EqualsAndHashCode.Include
     @ToString.Include
-    
+
     @NotNull(message = "campo vacío")
     @Column(name = "codigo", unique = true)
     private int codigo;
-    
+
+    @NotEmpty
     @NotBlank(message = "campo vacío")
-    @Column(name = "nombre",nullable = false, length = 250)
+    @Column(name = "nombre", nullable = false, length = 250)
     private String nombre;
-    
+
     @OneToMany(mappedBy = "recurso")
     private List<TipoMaterial> materiales;
- 
-    
+
 }

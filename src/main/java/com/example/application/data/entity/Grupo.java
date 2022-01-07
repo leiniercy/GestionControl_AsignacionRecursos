@@ -24,6 +24,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import com.example.application.data.AbstractEntity;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
@@ -42,7 +43,8 @@ public class Grupo   extends AbstractEntity {
 
     @EqualsAndHashCode.Include
     @ToString.Include
-
+    
+    @NotEmpty
     @NotBlank(message = "campo vacío")
     @Column(name = "numero", unique = true)
     @Size(max = 4, min=4)

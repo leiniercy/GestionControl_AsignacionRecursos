@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -29,10 +30,12 @@ public class Estudiante extends Persona {
     @EqualsAndHashCode.Include
     @ToString.Include
     
+    @NotEmpty
     @NotBlank(message = "campo vacío")
-    @Column(name = "solapin",nullable = false ,unique = true)
-    private String solpain;
+    @Column(name = "solapin",unique = true, nullable = false)
+    private String solapin;
     
+    @NotEmpty
     @NotNull(message = "campo vacío")
     @Column(name = "annoAcademico")
     private Integer anno_academico;

@@ -21,6 +21,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import com.example.application.data.AbstractEntity;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -43,14 +44,17 @@ public class Area extends AbstractEntity {
     @EqualsAndHashCode.Include
     @ToString.Include
     
+    @NotEmpty
     @NotBlank(message = "campo vacío")
     @Column(name = "nombre",length = 250, nullable = false)
     private String nombre;
     
+    @NotEmpty
     @NotBlank(message = "campo vacío")
     @Column(name = "descripcion",length = 255, nullable = false)
     private String descripcion;
 
+    @NotEmpty
     @NotBlank(message = "campo vacío")
     @Column(name = "nombre_directivo", length = 250, nullable = false)
     private String nombre_directivo;

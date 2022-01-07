@@ -14,6 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -42,19 +43,24 @@ public class Persona  extends AbstractEntity{
     @EqualsAndHashCode.Include
     @ToString.Include
 
+    @NotEmpty
     @Column(name = "nombre", length = 250,nullable = false)
     @NotBlank(message = "campo vacío")
     private String nombre;
     
+    @NotEmpty
+    @NotBlank(message = "campo vacío")
     @Column(name = "apellidos", length = 250,nullable = false)
     private String apellidos;
     
+    @NotEmpty
     @NotBlank(message = "campo vacío")
     @Column(name = "CI" ,length = 11)
     @Size(max = 11, min = 11) 
     private String ci;
     
     @Email
+    @NotEmpty
     @NotBlank(message = "campo vacío")
     @Column(name = "email")
     private String email;

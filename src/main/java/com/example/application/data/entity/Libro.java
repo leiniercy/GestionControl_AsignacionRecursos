@@ -12,6 +12,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -39,6 +40,7 @@ public class Libro extends AbstractEntity {
     @Column(name = "codigo", unique = true)
     private Integer codigo;
 
+    @NotEmpty
     @NotBlank(message = "campo vacío")
     @Column(name = "titulo", length = 250, nullable = false)
     private String titulo;
@@ -50,7 +52,8 @@ public class Libro extends AbstractEntity {
     @NotNull(message = "campo vacío")
     @Column(name = "tomo")
     private Integer tomo;
-
+    
+    @NotEmpty
     @NotBlank(message = "campo vacío")
     @Column(name = "autor", length = 250, nullable = false)
     private String autor;

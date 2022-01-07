@@ -19,6 +19,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import com.example.application.data.AbstractEntity;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
@@ -42,6 +43,7 @@ public class Asignatura extends AbstractEntity{
     @EqualsAndHashCode.Include
     @ToString.Include
     
+    @NotEmpty
     @NotBlank(message = "campo vacío")
     @Column(name = "nombre", length = 250, nullable = false)
     private String nombre;
