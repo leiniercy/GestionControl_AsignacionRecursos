@@ -5,10 +5,13 @@ import com.example.application.data.entity.User;
 import com.example.application.security.AuthenticatedUser;
 import com.example.application.views.area.AreaView;
 import com.example.application.views.dashboard.DashboardView;
+import com.example.application.views.estudiantes.EstudiantesView;
 import com.example.application.views.libro.LibroView;
 import com.example.application.views.listalibros.ListaLibrosView;
 import com.example.application.views.report.ReportView;
+import com.example.application.views.trabajador.TrabajadorView;
 import com.example.application.views.trajeta_prestamo.TrajetaPrestamoEstudianteView;
+import com.example.application.views.trajeta_prestamo.TrajetaPrestamoTrabajadorView;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
@@ -123,9 +126,13 @@ public class MainLayout extends AppLayout {
             new MenuItemInfo("Dashboard", "la la-file", DashboardView.class), //
             new MenuItemInfo("Libro", "la la-file", LibroView.class),
             new MenuItemInfo("Report", "la la-file", ReportView.class),
+            new MenuItemInfo("Estudiante", "la la-file", EstudiantesView.class),
+            new MenuItemInfo("Trabajador", "la la-file", TrabajadorView.class),
             new MenuItemInfo("Area", "la la-file", AreaView.class),
             new MenuItemInfo("Lista de Libros", "la la-file", ListaLibrosView.class),
-            new MenuItemInfo("Trajeta de Prestamo", "la la-file", TrajetaPrestamoEstudianteView.class),};
+            new MenuItemInfo("Trajeta de Prestamo Estudiante", "la la-file", TrajetaPrestamoEstudianteView.class),
+            new MenuItemInfo("Trajeta de Prestamo Trabajador", "la la-file", TrajetaPrestamoTrabajadorView.class),
+        };
         List<RouterLink> links = new ArrayList<>();
         for (MenuItemInfo menuItemInfo : menuItems) {
             if (accessChecker.hasAccess(menuItemInfo.getView())) {
